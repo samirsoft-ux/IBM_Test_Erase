@@ -16,54 +16,45 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
 así, ir a nuestro clúster de Kubernetes sobre IBM Cloud, hacer click en el menú “Actions” y elegir la opción “Connect via CLI” y ejecutar el segundo comando: "ibmcloud ks cluster config --cluster
 <cluster_id>" INGRESAR GIF DE CÓMO SE HACE
 
+## Consideraciones 📑
+* Estos comandos se pueden ejecutar desde la terminal de su computadora personal o desde la terminal de IBM Cloud
+* Para copiar el comando a ingresar debe de omitir las "" que se encuentran al inicio y al final del comando
+
 ## 1.CONFIGURACIONES PREVIAS DEL ENTORNO
-Para desplegar un dispositivo de pasarela ```Gateway Appliance``` realice lo siguiente:
 
    ## Instalación del plugin de Cloud Object Storage sobre el clúster de Kubernetes utilizando Helm
+   **Instlación en MAC**
+1. Ingresar a su terminal o a la terminal de IBM Cloud
 
-1. De click en la pestaña del catálogo y en la barra de búsqueda escriba ```Gateway Appliance```.
+2. Ingrese el siguiente comando para iniciar la instalación: "brew install helm"
 
-2. Seleccione la opción ```Gateway Appliance By IBM ```. Una vez cargue la ventana de click en el botón ```Crear/Create```.
+3. Ingrese el siguiente comando para agregar el repositorio ibmc: "helm repo add ibm-helm https://raw.githubusercontent.com/IBM/charts/master/repo/ibm-helm"
 
-3. Complete los campos solicitados para la creación del recurso de la siguiente manera:
+4. Ingrese el siguiente comando para actualizar los repositorios: "helm repo update"
 
-   **Detalles de recurso**
-   * ```Proveedor```: seleccione el proveedor, para este caso es *Juniper*.
-   * ```Versión```: seleccione la versión, para este caso es *20.4R2-S2 (up to 1 Gbps)*.
-   * ```Licencia```: indique la licencia que utilizará, en este caso *Standard License*.
-   * ```Nombre del Host```: asigne un nombre exclusivo para el host.
-   * ```Dominio```: deje el dominio que aparece por defecto o indique uno nuevo.
-   * ```Alta disponibilidad```: deje esta opción sin seleccionar.
+5. Ingrese el siguiente comando para desempaquetar el repositorio descargado: "helm fetch --untar ibm-helm/ibm-object-storage-plugin"
 
-   **Ubicación**
-   * Seleccione la ubicación en donde desplegará el recurso.
-
-   **Perfil del servidor**
-   * ```Perfil```: deje el perfil que aparece por defecto, en este caso: *Intel Xeon 4210, 20 núcleos, 64 GB de RAM*.
-   * ```RAM```: indique la cantidad de memoria RAM que necesita, por ejemplo: *32 GB*.
-
-   **Discos de almacenamiento**
-   * ```Tipo```: indique el tipo de disco de almacenamiento, en este caso *RAID 1*.
-   * ```Discos```: establezca el número de discos, por ejemplo 2.
-   * ```Repuestos en caliente```: deje este campo con el valor por defecto.
-   * ```Soporte de disco```: deje este campo con el valor por defecto.
-
-   **Interfaz de red**
-   * ```Interfaz```: seleccione la opción *Público y privado*.
-   * ```Redundancia de puertos```: seleccione la opción *Automático*.
-   * ```Velocidad del puerto```: indique la velocidad del puerto, por ejemplo: *1 Gbps (20,00 US$)*.
-   *  ```Salida pública - ancho de banda```: seleccione el ancho de banda, en este caso *5000 GB (0,00 US$)*.
-
-   Los demás campos nos los modifique, deje los valores que salen por defecto. Para finalizar, de click en el botón ```Crear/Create```.
-   
-   ## TENER EN CUENTA
-   * ```Location```: El despliegue del gateway appliance debe de ser en la misma región que del cluster.
-
-   <p align="center">
-   <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/Crear.gif>
-   </p>
-  
+6. Ingrese el siguiente comando para la instalación del plugin de forma local: "helm plugin install ./ibm-object-storage-plugin/helm-ibmc"
+   **Posibles errores**
+   * ```Para sistemas operativos MAC```: Ingrese el siguiente comando para dar permisos de escritura y lectura: "chmod 755 ~/Library/helm/plugins/helm-ibmc/ibmc.sh"
+   * ```Para sistemas operativos Windows```: Ingrese el siguiente comando para dar permisos de escritura y lectura: "chmod 755 ~/.helm/plugins/helm-ibmc/ibmc.sh"
 <br />
+
+7. Ingrese el siguiente comando para verificar la instalación del plugin: "helm ibmc –help"
+
+8. Ingrese el siguiente comando para la instalación del plugin en el cluster: "helm ibmc install ibm-object-storage-plugin ibm-helm/ibm-object-storage-plugin --set license=true --set bucketAccessPolicy=true"
+   **Tener en cuenta**
+   * ```En caso que el cluster no se encuentre dentro de una VPC```: Modificar la porción del comando "bucketAccessPolicy=true" por "bucketAccessPolicy=false" para permitir la conexión del bucktet con el cluster
+   * ```En caso que el cluster no se encuentre dentro de una VPC```: Mantener la porción del comando "bucketAccessPolicy=true"
+<br />
+
+9. Ingrese el siguiente comando para verificar los Pods creados para el plugin: "kubectl get pod --all-namespaces -o wide | grep object"
+   **Tener en cuenta**
+   * Debemos tener un Pod ejecutando y una cantidad igual a la cantidad de worker nodes de nuestro clúster de ibmcloud-object-storage-driver ejecutandose
+<br />
+
+10. Ingrese el siguiente comando para verificar los Storage Class creados para el plugin: "kubectl get storageclass | grep s3" 
+
 
 ## 2.AGREGAR CREDENCIALES DE USO PARA ESTABLECER LA CONEXIÓN
 
