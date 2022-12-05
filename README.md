@@ -20,9 +20,8 @@ así, ir a nuestro clúster de Kubernetes sobre IBM Cloud, hacer click en el men
 * Estos comandos se pueden ejecutar desde la terminal de su computadora personal o desde la terminal de IBM Cloud
 * Para copiar el comando a ingresar debe de omitir las "" que se encuentran al inicio y al final del comando
 
-## 1.CONFIGURACIONES PREVIAS DEL ENTORNO
-
-   ## Instalación del plugin de Cloud Object Storage sobre el clúster de Kubernetes utilizando Helm
+## 1. Instalación del plugin de Cloud Object Storage sobre el clúster utilizando Helm
+   
    **Instlación en MAC**
 1. Ingresar a su terminal o a la terminal de IBM Cloud
 
@@ -38,7 +37,6 @@ así, ir a nuestro clúster de Kubernetes sobre IBM Cloud, hacer click en el men
    **Posibles errores**
    * ```Para sistemas operativos MAC```: Ingrese el siguiente comando para dar permisos de escritura y lectura: "chmod 755 ~/Library/helm/plugins/helm-ibmc/ibmc.sh"
    * ```Para sistemas operativos Windows```: Ingrese el siguiente comando para dar permisos de escritura y lectura: "chmod 755 ~/.helm/plugins/helm-ibmc/ibmc.sh"
-<br />
 
 7. Ingrese el siguiente comando para verificar la instalación del plugin: "helm ibmc –help"
 
@@ -46,17 +44,16 @@ así, ir a nuestro clúster de Kubernetes sobre IBM Cloud, hacer click en el men
    **Tener en cuenta**
    * ```En caso que el cluster no se encuentre dentro de una VPC```: Modificar la porción del comando "bucketAccessPolicy=true" por "bucketAccessPolicy=false" para permitir la conexión del bucktet con el cluster
    * ```En caso que el cluster no se encuentre dentro de una VPC```: Mantener la porción del comando "bucketAccessPolicy=true"
-<br />
 
 9. Ingrese el siguiente comando para verificar los Pods creados para el plugin: "kubectl get pod --all-namespaces -o wide | grep object"
    **Tener en cuenta**
    * Debemos tener un Pod ejecutando y una cantidad igual a la cantidad de worker nodes de nuestro clúster de ibmcloud-object-storage-driver ejecutandose
-<br />
 
 10. Ingrese el siguiente comando para verificar los Storage Class creados para el plugin: "kubectl get storageclass | grep s3" 
+<br />
 
 
-## 2.AGREGAR CREDENCIALES DE USO PARA ESTABLECER LA CONEXIÓN
+## 2. AGREGAR CREDENCIALES DE USO PARA ESTABLECER LA CONEXIÓN
 
 ### Ingresar por consola
 Luego de desplegar el ```Gateway Appliance``` siga los pasos que se indican a continuación para ingresar a Juniper:
