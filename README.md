@@ -19,10 +19,10 @@ así, ir a nuestro clúster de Kubernetes sobre IBM Cloud, hacer click en el men
 ## Consideraciones 📑
 * Estos comandos se pueden ejecutar desde la terminal de su computadora personal o desde la terminal de IBM Cloud
 * Para copiar el comando a ingresar debe de omitir las "" que se encuentran al inicio y al final del comando
+* Todos los parámetros de los comandos que se van a usar en esta guía y que esten dentro de <> deben de ser modificados acorde a lo que se especifica
 
 ## 1. Instalación del plugin de Cloud Object Storage sobre el clúster utilizando Helm
    
-   **Instlación en MAC**
 1. Ingresar a su terminal o a la terminal de IBM Cloud
 
 2. Ingrese el siguiente comando para iniciar la instalación: "brew install helm"
@@ -53,56 +53,59 @@ así, ir a nuestro clúster de Kubernetes sobre IBM Cloud, hacer click en el men
 <br />
 
 
-## 2. AGREGAR CREDENCIALES DE USO PARA ESTABLECER LA CONEXIÓN
+## 2. Almacenamiento de la información del Cloud Object Storage en el Cluster
 
-### Ingresar por consola
-Luego de desplegar el ```Gateway Appliance``` siga los pasos que se indican a continuación para ingresar a Juniper:
+1. Anotar el nombre del Cloud Object Storage
+   **Pasos para ubicar y generar una APIKEY**
+   * En el portal de IBM Cloud expandir la barra lateral izquierda
+   * Dentro de esta barra ingresar a la sección "Resource list"
+   * En el listado de los recursos ingresar al apartado "Storage"
+   * Copiar y almacenar el nombre del CLoud Object Storage
 
-1. En el recurso desplegado, de click en la pestaña ```Visión general/Overview``` y allí visualice la sección ```vSRX```. Identifique los siguientes datos:
+2. Anotar el APIKEY de tu cuenta de IBM Cloud
+   **Pasos para ubicar y generar una APIKEY**
+   * Verificar que la cuenta de IBM Cloud posea permisos de Manager para la creación de las credenciales de acceso
+   * En el portal de IBM Cloud dirigirse al botón "Manage" dentro de este botón ingresar a la sección "Access (IAM)"
+   * Dentro de la barra lateral izquierda ingresar a la sección "API keys"
+   * Seleccionar el botón "Create +"
+   * Rellenar los datos que te piden para la creación del APIKEY
+   * Copiar y almacenar el APIKEY generado
 
-   * ```IP Pública```.
-   * ```IP Privada```.
-   * ```Nombres de usuario```: root y admin.
-   * ```Contraseñas```.
+3. Anotar el GUID del Cloud Object Storage
+   **Pasos para ubicar y generar una APIKEY**
+   * En el terminal donde se viene trabajando ingresar el siguiente comando para visualizar el GUID: "ibmcloud resource service-instance <service_name> | grep GUID"
+   * Copiar y almacenar el GUID mostrado
 
-2. En el navegador (se recomienda usar Firefox) coloque la ip pública (vSRX) y el puerto 8443, de la siguiente manera:
+4. Ingrese el siguiente comando para crear un Secret y almacenarlo en el cluster: "kubectl create secret generic <nombre_secret> --type=ibm/ibmc-s3fs --from-literal=api-key=<api_key> --from-literal=service-instance-id=<service_instance_guid>"
 
-   ```
-   https://ip_publica:8443
-   ```
-   
-   Espera mientras carga la página
-   
-3. Una vez cargue la ventana, se le solicitará que coloque usuario y contraseña para acceder a Juniper. Complete los campos teniendo en cuenta:
-
-   * ```Username```: coloque *admin*.
-   * ```Password```: coloque la contraseña para el usuario *admin* obtenida en la sección ```vSRX```.
-
-4. De click en el botón ```Log In``` para iniciar sesión en Juniper.
-
-  <p align="center">
-   <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/Juniper.png>
-   </p>
+5. Copiar y almacenar el <nombre_secret> que se ha creado
+<br />
  
-### Ingresar por linea de comando SHH
-En la línea de comandos de su equipo ingrese el comando de conexión SSH:
-```
-ssh admin@<ip_publica>
-```
-Cuando se le pida la contraseña ingrese la contraseña para el usuario *admin* obtenida en la sección ```vSRX```. Podrá rectificar que se encuentra en la consola del dispositivo al ver la etiqueta con el nombre que le dio a su instancia.
- 
- 
-## 3.ASOCIAR EL BUCKET CON EL CLUSTER
-Antes de iniciar con la configuración es necesario crear una VPN en VPC, para esto tenga en cuenta el siguiente <a href="https://github.com/emeloibmco/VPC-Conexion-VPN"> repositorio </a>
+## 3. Asoicación de un Bucket con el cluster
 
-### Creación de nuevos segmentos de red
-Luego de crear la VPN for VPC siguiendo los pasos explicados en el repositorio debe crear los nuevos segmentos de red en el global adress book en Juniper para la VPN y la VLAN creados anteriormente. Para esto una vez iniciada sesión en Juniper siga la ruta ```Security Policies and Objects > Global Addresses  > Icono de lápiz > +``` para agregar una nueva dirección global. Esto abrirá un menú de configuración, aquí ingrese la siguiente información:
-* ```Address Name```: Ingrese un nombre distintivo para la dirección
-* ```Value```: Ingrese el segmento de red privado del servicio creado anteriormente.
-* De click en ```Ok```
-* De click en ```Commit```> ```Commit configuration```
+1. Crear el bucket desde la consola de IBM Cloud
+   **Pasos para ubicar y crear un Bucket**
+   * En el portal de IBM Cloud expandir la barra lateral izquierda
+   * Dentro de esta barra ingresar a la sección "Resource list"
+   * En el listado de los recursos ingresar al apartado "Storage"
+   * Ingresar a la instancia de CLoud Object Storage que posee
+   * Dentro de la barra lateral izquierda ingresar a la sección "Bucktes"
+   * Seleccionar el botón "Create bucket +"
+   * Dentro de esta vista seleccionar el icono "->" dentro del cuadrado que posee el título de "Quickly get started"
+   * Seguir la guía de configuración del Bucket
+   * Copiar y almacenar el nombre del Bucket creado
 
-Luego de esto repita el proceso tanto para la VPN como para la VLAN
+2. Crear el archivo de configuración "pvc.yaml" para configurar los parámetros del Bucket dentro del cluster
+   **Pasos crear el archivo de configuración**
+   * Ingresar al terminal donde se viene trabajando
+   * Dentro de esta barra ingresar a la sección "Resource list"
+   * En el listado de los recursos ingresar al apartado "Storage"
+   * Ingresar a la instancia de CLoud Object Storage que posee
+   * Dentro de la barra lateral izquierda ingresar a la sección "Bucktes"
+   * Seleccionar el botón "Create bucket +"
+   * Dentro de esta vista seleccionar el icono "->" dentro del cuadrado que posee el título de "Quickly get started"
+   * Seguir la guía de configuración del Bucket
+   * Copiar y almacenar el nombre del Bucket creado
 
   <p align="center">
    <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/Segmentos.gif>
