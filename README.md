@@ -2,23 +2,19 @@
 
 Se recomienda hacer esta implementación sobre un SO Linux para agilizar la instalación de herramientas y ejecución de comandos. Estas implementaciones se realizan suponiendo que se tiene un SO Linux.
 
-## Tabla de contenido(CAMBIAR) 📑
-1. [Crear servicio Gateway Appliance](#crear-servicio-gateway-appliance)
-2. [Ingresar a Juniper](#ingresar-a-juniper)
-3. [Configuración VPN site to site Juniper](#configuración-vpn-site-to-site-juniper)
-4. [Habilitación y Políticas de Seguridad](#habilitación-y-pol%C3%ADticas-de-seguridad)
-5. [Habilitación de trafico a internet publico](#habilitación-de-trafico-a-internet-publico)
+## Tabla de contenido 📑
+1. [Instalación del plugin de Cloud Object Storage sobre el clúster utilizando Helm]
+2. [Almacenamiento de la información del Cloud Object Storage en el Cluster]
+3. [Asoicación de un Bucket con el cluster]
 
 ## Pre-Requisitos :pencil:
 * La cuenta tiene una instancia en plan Standard de Cloud Object Storage <a href="https://cloud.ibm.com/objectstorage/create"> IBM Cloud Object Storage </a>
-* Haber hecho login sobre IBM Cloud desde la CLI con el siguiente comando: "ibmcloud login" INGRESAR GIF DE CÓMO SE HACE
-* Tener acceso al clúster de Kubernetes mediante los comandos kubectl, de no ser
-así, ir a nuestro clúster de Kubernetes sobre IBM Cloud, hacer click en el menú “Actions” y elegir la opción “Connect via CLI” y ejecutar el siguiente comando: "ibmcloud ks cluster config --cluster
-<cluster_id>" INGRESAR GIF DE CÓMO SE HACE
+* Haber hecho login sobre IBM Cloud desde la CLI con el siguiente comando: "ibmcloud login"
+* Tener acceso al clúster de Openshift mediante los comandos kubectl, de no ser así, ir al clúster de Openshift sobre IBM Cloud, hacer click en el menú “Actions”, elegir la opción “Connect via CLI”, desplegar el token que se muestra en la nueva ventana y ejecutar, a través de una terminal, el comando que se muestra al haber desplegado el token
 
 ## Consideraciones 📑
 * Estos comandos se pueden ejecutar desde la terminal de su computadora personal o desde la terminal de IBM Cloud
-* Para copiar el comando a ingresar debe de omitir las "" que se encuentran al inicio y al final del comando
+* Para copiar los comandos de esta guía debe de omitir las "" que se encuentran al inicio y al final de este
 * Todos los parámetros de los comandos que se van a usar en esta guía y que esten dentro de <> deben de ser modificados acorde a lo que se especifica
 
 ## 1. Instalación del plugin de Cloud Object Storage sobre el clúster utilizando Helm
