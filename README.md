@@ -3,9 +3,9 @@
 Se recomienda hacer esta implementación sobre un SO Linux para agilizar la instalación de herramientas y ejecución de comandos. Estas implementaciones se realizan suponiendo que se tiene un SO Linux.
 
 ## Tabla de contenido 📑
-1. [Instalación del plugin de Cloud Object Storage sobre el clúster utilizando Helm]
-2. [Almacenamiento de la información del Cloud Object Storage en el Cluster]
-3. [Asoicación de un Bucket con el cluster]
+1. Instalación del plugin de Cloud Object Storage sobre el clúster utilizando Helm
+2. Almacenamiento de la información del Cloud Object Storage en el Cluster
+3. Asoicación de un Bucket con el cluster
 
 ## Pre-Requisitos :pencil:
 * La cuenta tiene una instancia en plan Standard de Cloud Object Storage <a href="https://cloud.ibm.com/objectstorage/create"> IBM Cloud Object Storage </a>
@@ -30,7 +30,7 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
 5. Ingrese el siguiente comando para desempaquetar el repositorio descargado: "helm fetch --untar ibm-helm/ibm-object-storage-plugin"
 
 6. Ingrese el siguiente comando para la instalación del plugin de forma local: "helm plugin install ./ibm-object-storage-plugin/helm-ibmc"
-   **Posibles errores**
+   <br /> **Posibles errores**
    * ```Para sistemas operativos MAC```: Ingrese el siguiente comando para dar permisos de escritura y lectura: "chmod 755 ~/Library/helm/plugins/helm-ibmc/ibmc.sh"
    * ```Para sistemas operativos Windows```: Ingrese el siguiente comando para dar permisos de escritura y lectura: "chmod 755 ~/.helm/plugins/helm-ibmc/ibmc.sh"
 
