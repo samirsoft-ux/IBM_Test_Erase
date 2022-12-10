@@ -42,7 +42,7 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
    <br />
    <br />
    **Tener en cuenta**
-   * ```En caso que el cluster no se encuentre dentro de una VPC```: Modificar la porción del comando "bucketAccessPolicy=true" por "bucketAccessPolicy=false" para permitir la conexión del bucktet con el cluster
+   * ```En caso que el cluster se encuentre dentro de una VPC```: Modificar la porción del comando "bucketAccessPolicy=true" por "bucketAccessPolicy=false" para permitir la conexión del bucktet con el cluster
    * ```En caso que el cluster no se encuentre dentro de una VPC```: Mantener la porción del comando "bucketAccessPolicy=true"
 
 9. Ingrese el siguiente comando para verificar los Pods creados para el plugin: "kubectl get pod --all-namespaces -o wide | grep object"
@@ -60,7 +60,7 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
 1. Anotar el nombre del Cloud Object Storage
    <br />
    <br />
-   **Pasos para ubicar y generar una APIKEY**
+   **Pasos para obtener el nombre del servicio de Cloud Object Storage**
    * En el portal de IBM Cloud expandir la barra lateral izquierda
    * Dentro de esta barra ingresar a la sección "Resource list"
    * En el listado de los recursos ingresar al apartado "Storage"
@@ -80,7 +80,7 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
 3. Anotar el GUID del Cloud Object Storage
    <br />
    <br />
-   **Pasos para ubicar y generar una APIKEY**
+   **Pasos para obtener el GUID del servicio de Cloud Object Storage**
    * En el terminal donde se viene trabajando ingresar el siguiente comando para visualizar el GUID: "ibmcloud resource service-instance <service_name> | grep GUID"
    * Copiar y almacenar el GUID mostrado
 
@@ -89,7 +89,7 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
 5. Copiar y almacenar el <nombre_secret> que se ha creado
 <br />
  
-## 3. Asoicación de un Bucket con el cluster
+## 3. Conexión del Bucket con el Cluster
 
 1. Crear el bucket desde la consola de IBM Cloud
    <br />
@@ -115,16 +115,20 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
    * Guardar los cambios realizados en el archivo de configuración "pvc.yaml"
    * Ingresar al terminal donde se viene trabajando e ingrese el siguiente comando para ejecutar el yaml en el cluster: "kubectl apply -f pvc.yaml"
 
+3. Corroborar que el proceso se realizó de manera correcta ejecutando el siguiente comando: kubectl get pvc 
+   <br />
+   <br />
+   **Tener en cuenta**
+   * El estado que debe de tener el persistent volume debe de ser “BOUND” 
+
   <p align="center">
    <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/Segmentos.gif>
    </p>
 <br />
 
 ## Referencias :mag:
-* <a href="https://github.com/emeloibmco/VPC-Conexion-VPN"> VPC Conexión VPN</a>. 
-* <a href="https://github.com/emeloibmco/PowerVS-Conectividad"> PowerVS-Conectividad</a>. 
-* <a href="https://www.juniper.net/documentation/us/en/software/junos/nat/topics/topic-map/nat-security-source-and-source-pool.html"> Network Address Translation User Guide</a>. 
-
+* <a href="https://cloud.ibm.com/objectstorage/create"> IBM Cloud Object Storage in IBM Portal</a>. 
+* <a href="https://cloud.ibm.com/docs/openshift?topic=openshift-storage_cos_apps&mhsrc=ibmsearch_a&mhq=Persistent+Volume+Claim"> Adding object storage to apps </a>. 
 
 ## Autores :black_nib:
 Italo Silva IBM Cloud Tech Sales Perú.
