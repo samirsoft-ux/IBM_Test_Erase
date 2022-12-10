@@ -30,18 +30,24 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
 5. Ingrese el siguiente comando para desempaquetar el repositorio descargado: "helm fetch --untar ibm-helm/ibm-object-storage-plugin"
 
 6. Ingrese el siguiente comando para la instalación del plugin de forma local: "helm plugin install ./ibm-object-storage-plugin/helm-ibmc"
-   <br /> **Posibles errores**
+   <br />
+   <br />
+   **Posibles errores**
    * ```Para sistemas operativos MAC```: Ingrese el siguiente comando para dar permisos de escritura y lectura: "chmod 755 ~/Library/helm/plugins/helm-ibmc/ibmc.sh"
    * ```Para sistemas operativos Windows```: Ingrese el siguiente comando para dar permisos de escritura y lectura: "chmod 755 ~/.helm/plugins/helm-ibmc/ibmc.sh"
 
 7. Ingrese el siguiente comando para verificar la instalación del plugin: "helm ibmc –help"
 
 8. Ingrese el siguiente comando para la instalación del plugin en el cluster: "helm ibmc install ibm-object-storage-plugin ibm-helm/ibm-object-storage-plugin --set license=true --set bucketAccessPolicy=true"
+   <br />
+   <br />
    **Tener en cuenta**
    * ```En caso que el cluster no se encuentre dentro de una VPC```: Modificar la porción del comando "bucketAccessPolicy=true" por "bucketAccessPolicy=false" para permitir la conexión del bucktet con el cluster
    * ```En caso que el cluster no se encuentre dentro de una VPC```: Mantener la porción del comando "bucketAccessPolicy=true"
 
 9. Ingrese el siguiente comando para verificar los Pods creados para el plugin: "kubectl get pod --all-namespaces -o wide | grep object"
+   <br />
+   <br />
    **Tener en cuenta**
    * Debemos tener un Pod ejecutando y una cantidad igual a la cantidad de worker nodes de nuestro clúster de ibmcloud-object-storage-driver ejecutandose
 
@@ -52,6 +58,8 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
 ## 2. Almacenamiento de la información del Cloud Object Storage en el Cluster
 
 1. Anotar el nombre del Cloud Object Storage
+   <br />
+   <br />
    **Pasos para ubicar y generar una APIKEY**
    * En el portal de IBM Cloud expandir la barra lateral izquierda
    * Dentro de esta barra ingresar a la sección "Resource list"
@@ -59,6 +67,8 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
    * Copiar y almacenar el nombre del CLoud Object Storage
 
 2. Anotar el APIKEY de tu cuenta de IBM Cloud
+   <br />
+   <br />
    **Pasos para ubicar y generar una APIKEY**
    * Verificar que la cuenta de IBM Cloud posea permisos de Manager para la creación de las credenciales de acceso
    * En el portal de IBM Cloud dirigirse al botón "Manage" dentro de este botón ingresar a la sección "Access (IAM)"
@@ -68,6 +78,8 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
    * Copiar y almacenar el APIKEY generado
 
 3. Anotar el GUID del Cloud Object Storage
+   <br />
+   <br />
    **Pasos para ubicar y generar una APIKEY**
    * En el terminal donde se viene trabajando ingresar el siguiente comando para visualizar el GUID: "ibmcloud resource service-instance <service_name> | grep GUID"
    * Copiar y almacenar el GUID mostrado
@@ -80,6 +92,8 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
 ## 3. Asoicación de un Bucket con el cluster
 
 1. Crear el bucket desde la consola de IBM Cloud
+   <br />
+   <br />
    **Pasos para ubicar y crear un Bucket**
    * En el portal de IBM Cloud expandir la barra lateral izquierda
    * Dentro de esta barra ingresar a la sección "Resource list"
@@ -92,6 +106,8 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
    * Copiar y almacenar el nombre del Bucket creado
 
 2. Crear el archivo de configuración "pvc.yaml" para configurar los parámetros del Bucket dentro del cluster
+   <br />
+   <br />
    **Pasos crear el archivo de configuración**
    * Descargar el archivo de configuración "pvc.yaml" que se encuentra en el repositorio
    * Modificar el archivo de configuración en base a las variables que posea, puede guiarse del archivo de configuración "pvcTemplate.yaml" que se encuentra en el repositorio
