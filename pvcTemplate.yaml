@@ -1,0 +1,22 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: bucket-filenet-dev-cd
+  namespace: default
+  annotations:
+    ibm.io/auto-create-bucket: "false"
+    ibm.io/auto-delete-bucket: "false" #al momento de instalarlo en el cluster poner false si este está dentro de una vpc
+    ibm.io/bucket: "cos-dev-filenetasa01-cos-standard-ri5" #nombre del bucket, verificar que sea en la misma región que el cluster
+    ibm.io/secret-name: "secret-cos-dev-cd" #en este secret tiene que estar el apikey del cos service
+    ibm.io/endpoint: "https://s3.us-south.cloud-object-storage.appdomain.cloud" #el endpoint público del bucket
+    ibm.io/tls-cipher-suite: "default"
+    ibm.io/secret-namespace: "default"
+    ibm.io/add-mount-param: "del_cache, retries=6"
+    ibm.io/access-policy-allowed-ips: "10.240.0.4, 10.240.128.4, 10.240.64.4"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5
+  storageClassName: ibmc-s3fs-standard-cross-region

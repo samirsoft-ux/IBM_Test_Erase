@@ -1,0 +1,24 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: <name> # Enter the name of the PVC.
+  namespace: <namespace> # Enter the namespace where you want to create the PVC. The PVC must be created in the same namespace where you created the Kubernetes secret for your service credentials and where you want to run your pod.
+  annotations:
+    ibm.io/auto-create-bucket: "<true_or_false>"
+    ibm.io/auto-delete-bucket: "<true_or_false>"
+    ibm.io/bucket: "<bucket_name>"
+    ibm.io/object-path: "<bucket_subdirectory>"
+    ibm.io/secret-name: "<secret_name>" 
+    ibm.io/quota-limit: "true/false" # Disable or enable a quota limit for your PVC. To use this annotation you must specify the -set quotaLimit=true option during installation.
+    ibm.io/endpoint: "https://<s3fs_service_endpoint>"
+    ibm.io/tls-cipher-suite: "default"
+    ibm.io/secret-namespace: "<secret-namespace>" # By default, the COS plug-in searches for your secret in the same namespace where you create the PVC. If you created your secret in a namespace other than the namespace where you want to create your PVC, enter the namespace where you created your secret.
+    ibm.io/add-mount-param: "<option-1>,<option-2>" # s3fs mount options
+    ibm.io/access-policy-allowed-ips: "XX.XXX.XX.XXX, XX.XX.XX.XXX, XX.XX.XX.XX" # A csv of allow listed IPs.
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: <size>
+  storageClassName: <storage_class>

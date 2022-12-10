@@ -10,10 +10,10 @@ Se recomienda hacer esta implementación sobre un SO Linux para agilizar la inst
 5. [Habilitación de trafico a internet publico](#habilitación-de-trafico-a-internet-publico)
 
 ## Pre-Requisitos :pencil:
-* La cuenta tiene una instancia en plan Standard de Cloud Object Storage <a href="https://cloud.ibm.com/objectstorage/create"> IBM Cloud Object Storage </a>.
+* La cuenta tiene una instancia en plan Standard de Cloud Object Storage <a href="https://cloud.ibm.com/objectstorage/create"> IBM Cloud Object Storage </a>
 * Haber hecho login sobre IBM Cloud desde la CLI con el siguiente comando: "ibmcloud login" INGRESAR GIF DE CÓMO SE HACE
 * Tener acceso al clúster de Kubernetes mediante los comandos kubectl, de no ser
-así, ir a nuestro clúster de Kubernetes sobre IBM Cloud, hacer click en el menú “Actions” y elegir la opción “Connect via CLI” y ejecutar el segundo comando: "ibmcloud ks cluster config --cluster
+así, ir a nuestro clúster de Kubernetes sobre IBM Cloud, hacer click en el menú “Actions” y elegir la opción “Connect via CLI” y ejecutar el siguiente comando: "ibmcloud ks cluster config --cluster
 <cluster_id>" INGRESAR GIF DE CÓMO SE HACE
 
 ## Consideraciones 📑
@@ -97,94 +97,16 @@ así, ir a nuestro clúster de Kubernetes sobre IBM Cloud, hacer click en el men
 
 2. Crear el archivo de configuración "pvc.yaml" para configurar los parámetros del Bucket dentro del cluster
    **Pasos crear el archivo de configuración**
-   * Ingresar al terminal donde se viene trabajando
-   * Dentro de esta barra ingresar a la sección "Resource list"
-   * En el listado de los recursos ingresar al apartado "Storage"
-   * Ingresar a la instancia de CLoud Object Storage que posee
-   * Dentro de la barra lateral izquierda ingresar a la sección "Bucktes"
-   * Seleccionar el botón "Create bucket +"
-   * Dentro de esta vista seleccionar el icono "->" dentro del cuadrado que posee el título de "Quickly get started"
-   * Seguir la guía de configuración del Bucket
-   * Copiar y almacenar el nombre del Bucket creado
+   * Descargar el archivo de configuración "pvc.yaml" que se encuentra en el repositorio
+   * Modificar el archivo de configuración en base a las variables que posea, puede guiarse del archivo de configuración "pvcTemplate.yaml" que se encuentra en el repositorio
+   * En caso necesite más información acerca del archivo de configuración ingrese a la siguiente <a href="https://cloud.ibm.com/docs/openshift?topic=openshift-storage_cos_apps&mhsrc=ibmsearch_a&mhq=Persistent+Volume+Claim"> documentación </a>
+   * Guardar los cambios realizados en el archivo de configuración "pvc.yaml"
+   * Ingresar al terminal donde se viene trabajando e ingrese el siguiente comando para ejecutar el yaml en el cluster: "kubectl apply -f pvc.yaml"
 
   <p align="center">
    <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/Segmentos.gif>
    </p>
-
-### Creación de una dirección de Zona 
-Siga la ruta ```Security Policies and Objects > Zones/Screens > +```para agregar una nueva zona. Esto abrirá un menú de configuración, aquí ingrese la siguiente información:
-* ```Zone Name```: Ingrese un nombre distintivo para la zona
-* ```Zone Type```: Seleccione ```Security```.
-* De click en ```Ok```
-* De click en ```Commit```> ```Commit configuration```
-
-  <p align="center">
-   <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/Zona.gif>
-   </p>
-   
-### Creación de una nueva interface
-Siga la ruta ```Network > Connectivity > Interfaces``` y tenga en cuenta los siguientes pasos para agregar una nueva Interfaz. 
-* Seleccione la interfaz st0 en el menú desplegable.
-* De click en el botón ```Create``` > ```Logical interface```. Esto abrirá un menú de configuración, aqui ingrese la siguiente información.
-  * ```Tunnel interface st0```: ingrese ```0``
-  * ```Zone```: Seleccione la Zona creada anteriormente.
-  * ```Address type```: Seleccione ```Unumbered```.
-* De click en ```Ok```
-* De click en ```Commit```> ```Commit configuration```
-
-  <p align="center">
-   <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/Interface.gif>
-   </p>
-
-### Creación de VPN site to site
-para esto siga la ruta ```VPN > create VPN > site to site```. Esto abrirá una pestaña de configuración, aquí ingrese la siguiente información.
-* ```Name```: Ingrese un nombre para la conexión.
-* De click sobre el icono de ```Remote Gateway```.Esto abrira una nueva pestaña de configuración, aquí ingrese la siguiente información:
-  * ```External IP address```: ingrese la IP de Gateway de la VPN for VPC.
-  * ```Protected networks```: Seleccione el segmento de red privado de la VPN que se creo anteriormente
-  *  De click en ```Ok```
-*  De click sobre el icono de ```Local Gateway```.Esto abrira una nueva pestaña de configuración, aquí ingrese la siguiente información:
-  * ```Tunnel Interface```: Seleccione la interfaz creada anteriormente.
-  * ```Pre-shared key```: Ingrese la misma contraseña que utilizo en la creación de la conexión VPN para VPC
-  * ```Protected networks```: De click en ```+```y seleccione la zona privada de la VLAN creada anteriormente
-  * De click en ```Ok```
-* ```De click en IKE and IPsec Settings``` para configurar las políticas de acuerdo a las establecidas en la creación de la VPN for VPC que se encuentran en el siguiente repositorio.
-* De click en ```Save```
-* De click en ```Commit```> ```Commit configuration```
-
-  <p align="center">
-   <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/STS.gif>
-   </p>
- 
-## 4.REALIZAR EL DESPLIEGUE
-
-Al terminar la configuración y creación de la conexión VPN site to site ingrese a la VPN creada anteriormente siguiendo la ruta ```Menú de navegación > VPC Infrastructure > VPNs > Seleccione el nombre de su VPN > VPN Connections```y habilite la conexión.
-
-  <p align="center">
-   <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/Habilitacion.gif>
-   </p>
-   
-Luego de esto se deben habilitar los puertos 500 y 4500 para tener una conexión satisfactoria, para esto tenga en cuenta los siguientes pasos:
- * Siga la ruta ```Network > Firewall Filters > IPV4``` 
- * En la sección ```Add New IPV4 Filter```ingrese la siguiente información:
- * ```Filter name```: PROTECT-IN
- * ```Term name```: IPSEC
- * De click en el botón ```Add```.
- * Esto abrirá una nueva pestaña de configuración, aquí despliegue el menú de ```Source Port```e ingrese los puertos que desea configurar, luego de click en ```Ok```.
- * De click en ```Commit```> ```Commit configuration```
-
-  <p align="center">
-   <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/Puertos.gif>
-   </p>
-   
- 
- Una vez terminada la configuracion debera obtener el siguiente resultado y tenga en cuenta el siguiente <a href="https://github.com/emeloibmco/PowerVS-Conectividad"> repositorio </a> para realizar una conexion entre PowerVS y el Firewall Juniper para proporcionar una VPN de sitio a sitio, permitiendo la comunicación de ubicación local on-premise a PowerVS, mediante un túnel GRE entre la ubicación Juniper y PowerVS.
-  <p align="center">
-   <img src=https://github.com/emeloibmco/Gateway-Appliance-Juniper-vSRX-version-20.4/blob/main/Imagenes/Resultado.png>
-   </p>
-
 <br />
-
 
 ## Referencias :mag:
 * <a href="https://github.com/emeloibmco/VPC-Conexion-VPN"> VPC Conexión VPN</a>. 
@@ -193,4 +115,4 @@ Luego de esto se deben habilitar los puertos 500 y 4500 para tener una conexión
 
 
 ## Autores :black_nib:
-Equipo IBM Cloud Tech Sales Colombia.
+Italo Silva IBM Cloud Tech Sales Perú.
